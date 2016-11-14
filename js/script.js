@@ -1,16 +1,70 @@
 $(function(){
-	var $carouselList = $('#carousel ul');
-	$carouselList.css({marginLeft: -400});
-	var i = 0;
-	var photos = ['#one', '#two', '#three', '#four', '#five'];
+	var $carouselList = $('#carousel ul'),
+		i = 0,
+		diff = 0,
+		diffNegative = 0,
+		holder,
+		photos = ['#one', '#two', '#three', '#four', '#five'],
+		interval = setInterval(changeSlideLeft, 3000);
 
-	photos.forEach(function(photo, index) {
+	$carouselList.css({marginLeft: -400});
+	$(photos[i]).removeClass('fa-circle-thin').addClass('fa-circle');
+	$('#right').click(function() {
+		changeSlideLeft();
+		resetInterval();
+	});
+	$('#left').click(function() {
+		changeSlideRight();
+		resetInterval();
+	});
+
+	$(document).keydown(function(e) {
+		if (e.keyCode === 39) {
+			changeSlideLeft();
+			resetInterval();
+		} else if (e.keyCode === 37) {
+			changeSlideRight();
+			resetInterval();
+		};
+    });
+
+    photos.forEach(function(photo, index) {
 		$(photo).click(function() {
-			console.log(index);
+			holder = index;
+			diff = i - holder;
+			diffAbs = Math.abs(diff);
+			console.log('i :' +i)
+			console.log('holder : ' +holder);
+			console.log('diff : ' +diff);
+			console.log('diffAbs : ' +diffAbs);
+			if ((diff > -3) && (diff < 0)) {
+				repeatSlideLeft(diffAbs);
+				console.log('1: ' +diffAbs);
+			} else if ((diff > 0) && (diff < 3)) {
+				repeatSlideRight(diff);
+				console.log('2: ' +diff);
+			} else if ((diff > -5) && (diff < 0)) {
+				repeatSlideRight(diff + 5);
+				console.log('3: ' +(diff + 5));
+			} else if ((diff > 0) && (diff < 5)) {
+				repeatSlideLeft(5 - diff);
+				console.log('4: ' +(5 - diff));
+			};
 		});
 	});
 
-	$(photos[i]).removeClass('fa-circle-thin').addClass('fa-circle');
+	function repeatSlideLeft(count) {
+		for (var z = 0; z < count; z++) {
+			changeSlideLeft();
+			resetInterval();
+		};
+	};
+	function repeatSlideRight(count) {
+		for (var z = 0; z < count; z++) {
+			changeSlideRight();
+			resetInterval();
+		};
+	}
 
 	function checkCounter(){
 		if (i === 5) {
@@ -36,8 +90,6 @@ $(function(){
 		$carouselList.animate({'marginLeft': +0}, 500, moveLastSlide);
 	};
 
-	var interval = setInterval(changeSlideLeft, 3000);
-
 	function moveLastSlide(){
 		var $firstItem = $carouselList.find('li:first');
 		var $lastItem = $carouselList.find('li:last');
@@ -61,14 +113,6 @@ $(function(){
 		interval = setInterval(changeSlideLeft, 3000);
 	}
 
-	$('#right').click(function() {
-		changeSlideLeft();
-		resetInterval();
-	});
-	$('#left').click(function() {
-		changeSlideRight();
-		resetInterval();
-	});
 });
 
 
