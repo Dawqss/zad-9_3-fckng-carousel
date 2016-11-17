@@ -1,11 +1,15 @@
-$(function(){
+//$(function(){
 	var $carouselList = $('#carousel ul'),
 		i = 0,
 		diff = 0,
 		diffNegative = 0,
 		holder,
-		photos = ['#one', '#two', '#three', '#four', '#five'],
-		interval = setInterval(changeSlideLeft, 3000);
+		photos = ['#one', '#two', '#three', '#four', '#five', 'six', 'seven'],
+		interval = setInterval(changeSlideLeft, 3000),
+		ulLength = $('li').length;
+		negativeHalfPlusOne = -(Math.floor(ulLength / 2)+1),
+		HalfPlusOne = (Math.floor(ulLength / 2)+1),
+		negativeUlLength = -(ulLength);
 
 	$carouselList.css({marginLeft: -400});
 	$(photos[i]).removeClass('fa-circle-thin').addClass('fa-circle');
@@ -33,22 +37,14 @@ $(function(){
 			holder = index;
 			diff = i - holder;
 			diffAbs = Math.abs(diff);
-			console.log('i :' +i)
-			console.log('holder : ' +holder);
-			console.log('diff : ' +diff);
-			console.log('diffAbs : ' +diffAbs);
-			if ((diff > -3) && (diff < 0)) {
+				if ((diff > negativeHalfPlusOne) && (diff < 0)) {
 				repeatSlideLeft(diffAbs);
-				console.log('1: ' +diffAbs);
-			} else if ((diff > 0) && (diff < 3)) {
+			} else if ((diff > 0) && (diff < HalfPlusOne)) {
 				repeatSlideRight(diff);
-				console.log('2: ' +diff);
-			} else if ((diff > -5) && (diff < 0)) {
-				repeatSlideRight(diff + 5);
-				console.log('3: ' +(diff + 5));
+			} else if ((diff > negativeUlLength) && (diff < 0)) {
+				repeatSlideRight(diff + ulLength);
 			} else if ((diff > 0) && (diff < 5)) {
-				repeatSlideLeft(5 - diff);
-				console.log('4: ' +(5 - diff));
+				repeatSlideLeft(ulLength - diff);
 			};
 		});
 	});
@@ -113,7 +109,7 @@ $(function(){
 		interval = setInterval(changeSlideLeft, 3000);
 	}
 
-});
+//});
 
 
 
